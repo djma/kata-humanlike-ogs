@@ -1,0 +1,15 @@
+{
+  "name": "kata-humanlike-ogs",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Run a rank_5k KataGo humanSL profile bot on OGS through gtp2ogs.",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "smoke:gtp": "node scripts/smoke-gtp.mjs"
+  },
+  "dependencies": {
+    "gtp2ogs": "^9.0.1"
+  },
+  "devDependencies": {}
+}
