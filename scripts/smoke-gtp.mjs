@@ -1,18 +1,15 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 import path from "node:path";
-import { loadDotEnv, repoRoot } from "./lib/env.mjs";
+import { loadDotEnv, repoRoot, requiredEnv } from "./lib/env.mjs";
 
 loadDotEnv();
 
-const katagoBin = process.env.KATAGO_BIN || "/opt/homebrew/bin/katago";
+const katagoBin = process.env.KATAGO_BIN || "katago";
 const config = process.env.KATAGO_CONFIG || "config/katago-human-rank-5k.cfg";
 const configPath = path.isAbsolute(config) ? config : path.join(repoRoot, config);
-const katagoModel =
-  process.env.KATAGO_MODEL ||
-  "/Users/davidma/.katrain/kata1-b28c512nbt-s12704148736-d5790336910.bin.gz";
-const humanModel =
-  process.env.KATAGO_HUMAN_MODEL || "/Users/davidma/.katrain/b18c384nbt-humanv0.bin.gz";
+const katagoModel = requiredEnv("KATAGO_MODEL");
+const humanModel = requiredEnv("KATAGO_HUMAN_MODEL");
 
 const args = [
   "gtp",

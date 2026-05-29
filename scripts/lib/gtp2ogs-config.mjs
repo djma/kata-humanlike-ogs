@@ -10,7 +10,7 @@ export function buildGtp2ogsConfig(bot, katagoConfigPath, greeting) {
       release_delay: 100,
     },
     ending_bot: {
-      command: katagoArgsFor(endingConfigPath, { includeHumanModel: false }),
+      command: katagoArgsFor(endingConfigPath(), { includeHumanModel: false }),
       manager: "persistent",
       release_delay: 100,
       allowed_resigns: 3,

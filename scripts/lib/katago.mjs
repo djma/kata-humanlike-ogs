@@ -1,29 +1,40 @@
 import fs from "node:fs";
 import path from "node:path";
-import { repoRoot, envForBot } from "./env.mjs";
+import { repoRoot, envForBot, requiredEnv } from "./env.mjs";
 
-export const katagoBin = process.env.KATAGO_BIN || "/opt/homebrew/bin/katago";
-export const katagoModel =
-  process.env.KATAGO_MODEL ||
-  "/Users/davidma/.katrain/kata1-b28c512nbt-s12704148736-d5790336910.bin.gz";
-export const humanModel =
-  process.env.KATAGO_HUMAN_MODEL || "/Users/davidma/.katrain/b18c384nbt-humanv0.bin.gz";
+const defaultKatagoBin = "katago";
+const defaultBaseConfig = "config/katago-human-rank-5k.cfg";
+const defaultEndingConfig = "config/katago-ending.cfg";
 
-const baseConfig = process.env.KATAGO_CONFIG || "config/katago-human-rank-5k.cfg";
-export const baseConfigPath = configPathFor(baseConfig);
+export function katagoBin() {
+  return process.env.KATAGO_BIN || defaultKatagoBin;
+}
 
-const endingConfig = process.env.KATAGO_ENDING_CONFIG || "config/katago-ending.cfg";
-export const endingConfigPath = configPathFor(endingConfig);
+export function katagoModel() {
+  return requiredEnv("KATAGO_MODEL");
+}
+
+export function humanModel() {
+  return requiredEnv("KATAGO_HUMAN_MODEL");
+}
+
+export function baseConfigPath() {
+  return configPathFor(process.env.KATAGO_CONFIG || defaultBaseConfig);
+}
+
+export function endingConfigPath() {
+  return configPathFor(process.env.KATAGO_ENDING_CONFIG || defaultEndingConfig);
+}
 
 export function configPathFor(value) {
   return path.isAbsolute(value) ? value : path.join(repoRoot, value);
 }
 
 export function katagoArgsFor(katagoConfigPath, { includeHumanModel = true } = {}) {
-  const args = [katagoBin, "gtp", "-model", katagoModel];
+  const args = [katagoBin(), "gtp", "-model", katagoModel()];
 
   if (includeHumanModel) {
-    args.push("-human-model", humanModel);
+    args.push("-human-model", humanModel());
   }
 
   args.push("-config", katagoConfigPath);
@@ -36,7 +47,7 @@ export function katagoArgsFor(katagoConfigPath, { includeHumanModel = true } = {
 }
 
 export function materializeRankConfig(bot, tempRoot) {
-  const sourcePath = configPathFor(envForBot("KATAGO_CONFIG", bot.key) || baseConfigPath);
+  const sourcePath = configPathFor(envForBot("KATAGO_CONFIG", bot.key) || baseConfigPath());
   let config = fs.readFileSync(sourcePath, "utf8");
   if (/^humanSLProfile\s*=.*$/m.test(config)) {
     config = config.replace(/^humanSLProfile\s*=.*$/m, `humanSLProfile = ${bot.profile}`);

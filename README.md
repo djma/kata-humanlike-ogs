@@ -82,15 +82,16 @@ cp .env.example .env
 
 Edit `.env` and set the shared KataGo paths:
 
+- `KATAGO_BIN`: KataGo executable path, or `katago` if it is on `PATH`.
 - `KATAGO_MODEL`: regular/full KataGo model for `-model`.
 - `KATAGO_HUMAN_MODEL`: human SL model, usually `b18c384nbt-humanv0.bin.gz`.
 
-The checked-in defaults use the local paths found on this machine:
+Example:
 
 ```text
-/opt/homebrew/bin/katago
-/Users/davidma/.katrain/kata1-b28c512nbt-s12704148736-d5790336910.bin.gz
-/Users/davidma/.katrain/b18c384nbt-humanv0.bin.gz
+KATAGO_BIN=katago
+KATAGO_MODEL=/path/to/kata1-b28c512nbt-s12704148736-d5790336910.bin.gz
+KATAGO_HUMAN_MODEL=/path/to/b18c384nbt-humanv0.bin.gz
 ```
 
 ## Smoke Test KataGo

@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node scripts/start.mjs",
+    "test": "node --test",
     "smoke:gtp": "node scripts/smoke-gtp.mjs"
   },
   "dependencies": {

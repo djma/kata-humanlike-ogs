@@ -55,7 +55,7 @@ export function spawnBot(bot, botCount) {
   ];
 
   console.error(
-    `${prefix}Starting gtp2ogs with ${katagoBin} using humanSLProfile=${bot.profile}; blitz/rapid/live, one game total, no handicap, one game per opponent per UTC day`,
+    `${prefix}Starting gtp2ogs with ${katagoBin()} using humanSLProfile=${bot.profile}; blitz/rapid/live, one game total, no handicap, one game per opponent per UTC day`,
   );
 
   const child = spawn(process.execPath, args, {
