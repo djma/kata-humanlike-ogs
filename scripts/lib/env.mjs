@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-export const repoRoot = path.resolve(new URL("..", import.meta.url).pathname);
+export const repoRoot = path.resolve(new URL("../..", import.meta.url).pathname);
 
 export function loadDotEnv(file = path.join(repoRoot, ".env")) {
   if (!fs.existsSync(file)) {
@@ -90,4 +90,12 @@ export function requiredEnv(name) {
     throw new Error(`${name} is required`);
   }
   return value;
+}
+
+export function rankKey(rank) {
+  return rank.toUpperCase().replace(/[^A-Z0-9]/g, "_");
+}
+
+export function envForBot(name, key) {
+  return process.env[`${name}_${key}`];
 }

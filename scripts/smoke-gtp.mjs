@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { spawn } from "node:child_process";
 import path from "node:path";
-import { loadDotEnv, repoRoot } from "./env.mjs";
+import { loadDotEnv, repoRoot } from "./lib/env.mjs";
 
 loadDotEnv();
 
