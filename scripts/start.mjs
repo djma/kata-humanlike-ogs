@@ -80,7 +80,9 @@ for (const bot of bots) {
   fs.mkdirSync(botTempDir, { recursive: true });
   bot.katagoConfigPath = materializeRankConfig(bot, tempRoot);
   bot.generatedGtp2ogsConfigPath = path.join(botTempDir, "gtp2ogs-live.json");
-  bot.patchedGtp2ogsPath = path.join(botTempDir, "gtp2ogs-patched.js");
+  // Use .cjs so Node treats the patched bundle as CommonJS even though it now
+  // lives inside the project tree, whose package.json sets "type": "module".
+  bot.patchedGtp2ogsPath = path.join(botTempDir, "gtp2ogs-patched.cjs");
   const dailyOpponentStatePath = dailyOpponentStatePathFor(bot, bots.length);
   patchGtp2ogs(dailyOpponentStatePath, bot.patchedGtp2ogsPath);
   const gtp2ogsConfig = buildGtp2ogsConfig(bot, bot.katagoConfigPath, greeting);
