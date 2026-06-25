@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
-import os from "node:os";
 import path from "node:path";
-import { loadDotEnv, rankKey, envForBot } from "./lib/env.mjs";
+import { loadDotEnv, rankKey, envForBot, repoRoot } from "./lib/env.mjs";
 import { materializeRankConfig } from "./lib/katago.mjs";
 import { loadSharedGreeting } from "./lib/ogs.mjs";
 import { buildGtp2ogsConfig } from "./lib/gtp2ogs-config.mjs";
@@ -19,7 +18,10 @@ process.on("uncaughtException", (error) => {
 assertGtp2ogsInstalled();
 
 const defaultRanks = ["15k", "10k", "5k", "1d"];
-const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "kata-humanlike-ogs-"));
+// Use a project-local directory so macOS periodic temp cleanup can't delete the
+// katago config files while the bot is running overnight.
+const tempRoot = path.join(repoRoot, "data", "run");
+fs.mkdirSync(tempRoot, { recursive: true });
 
 function usage() {
   return `Usage:
